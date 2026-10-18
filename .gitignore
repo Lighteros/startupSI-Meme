@@ -1,2 +1,5 @@
 api_stats.json
 api_coins.json
+
+.vercel
+.env*
