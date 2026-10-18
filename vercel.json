@@ -1,0 +1,17 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://www.startupsi.fun/api/:path*" },
+    { "source": "/how-it-works", "destination": "/how-it-works.html" },
+    { "source": "/products", "destination": "/products.html" },
+    { "source": "/fees", "destination": "/fees.html" },
+    { "source": "/faq", "destination": "/faq.html" },
+    { "source": "/launch", "destination": "/launch.html" },
+    { "source": "/c/:slug", "destination": "/coin.html" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}
