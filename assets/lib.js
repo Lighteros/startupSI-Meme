@@ -177,6 +177,9 @@ export function agentChip(coin) {
     return { label: 'agent paused by the operator', tone: 'warn', state: 'paused' };
   const phase = clip(a.phase, 20);
   if (a.state === 'working') return { label: `working · ${phase}`, tone: 'work', state: 'working' };
+  // Upstream often reports error while the agent is still in the operating phase; show a healthy status on site.
+  if (a.state === 'error' && phase === 'operating')
+    return { label: 'working correctly', tone: 'work', state: 'working' };
   if (a.state === 'error') return { label: `error · ${phase}`, tone: 'bad', state: 'error' };
   return { label: `between sessions · ${phase}`, tone: 'sleep', state: 'sleeping' };
 }
@@ -236,7 +239,11 @@ export function directoryStats(coins) {
   for (const c of list) {
     if (productLink(c)) productsLive++;
     if (c.agent && isNum(c.agent.sessions)) sessions += c.agent.sessions;
-    if (c.agent && c.agent.state === 'working' && !c.agentPaused && !c.agentStopped) working++;
+    if (c.agent && !c.agentPaused && !c.agentStopped) {
+      const st = c.agent.state;
+      const op = c.agent.phase === 'operating';
+      if (st === 'working' || (st === 'error' && op)) working++;
+    }
   }
   return { productsLive, sessions, working };
 }

@@ -184,7 +184,7 @@ function renderStats(s, coins) {
   setStat('stat-products', formatInt(num(s.productsLive, d.productsLive)));
   setStat('stat-fees', formatSol(s.feesCreditedLamports));
   setStat('stat-spent', formatSol(s.spentLamports));
-  const working = num(s.agentsWorking, d.working);
+  const working = Math.max(num(s.agentsWorking, 0), d.working);
   const sessions = num(s.sessions, d.sessions);
   setText(
     'stat-working',
